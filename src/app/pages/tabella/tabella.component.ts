@@ -45,16 +45,12 @@ export class TabellaComponent implements OnChanges {
     const statsMap = new Map<string, TeamStats>();
 
     this.results.forEach(result => {
-      // Frissítjük a hazai csapat statisztikáit
       this.updateTeam(statsMap, result.hazai, result.hazaiGol, result.vendegGol);
-      // Frissítjük a vendég csapat statisztikáit
       this.updateTeam(statsMap, result.vendeg, result.vendegGol, result.hazaiGol);
     });
 
-    // Átalakítjuk a map-et tömbbé
     this.teamStats = Array.from(statsMap.values());
 
-    // Rendezés: először pontszám (csökkenő), majd gólkülönbség (csökkenő), végül abc sorrend (növekvő)
     this.teamStats.sort((a, b) => {
       if (b.points !== a.points) {
         return b.points - a.points;

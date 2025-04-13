@@ -31,10 +31,8 @@ export interface MatchResult {
 export class EredmenyekComponent {
   displayedColumns: string[] = ['hazai', 'hazaiGol', 'vendegGol', 'vendeg'];
   
-  // Itt a már lezárt mérkőzések (eredmények) listája szerepel
   results: MatchResult[] = [];
 
-  // Ezt a metódust fel lehet hívni pl. egy közös adatkezelés (pl. szolgáltatás) vagy eseménykezelés útján
   addResult(result: MatchResult): void {
     this.results = [...this.results, result];
   }

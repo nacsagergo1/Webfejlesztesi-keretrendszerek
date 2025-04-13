@@ -1,4 +1,3 @@
-/* Az új mérkőzés kártya stílusa */
 .match-card {
   max-width: 1000px;
   margin: 20px auto;
@@ -6,7 +5,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.445);
 }
 
-/* MatCard header és cím */
 mat-card-header {
   padding: 16px;
 }
@@ -18,7 +16,6 @@ mat-card-title {
   margin-bottom: 16px;
 }
 
-/* Űrlapcsoport stílus az új mérkőzés felviteléhez */
 .form-group {
   display: flex;
   gap: 16px;
@@ -26,7 +23,6 @@ mat-card-title {
   margin-bottom: 20px;
 }
 
-/* Táblázat stílus az aktív mérkőzésekhez */
 table {
   width: 100%;
   background-color: #f9f9f9;
@@ -39,18 +35,14 @@ th.mat-header-cell {
   margin-bottom: 40px;
 }
 
-/* Egér fölé vitt sor kiemelése */
 .mat-row:hover {
   background-color: #f9f9f9;
 }
 
-/* A cellák alatti elválasztó vonal */
 .mat-row .mat-cell {
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-/* Oszlopspecifikus beállítások a mérkőzések táblázathoz */
-/* A hazai és vendég csapat oszlopoknak nincs fix szélességük, de a gólarány oszlopoknál beállítunk egy fix értéket */
 .mat-column-hazaiGol,
 .mat-column-vendegGol {
   width: 170px;
@@ -64,7 +56,6 @@ th.mat-header-cell {
   text-align: center;
 }
 
-/* Nincs aktív mérkőzés esetén */
 .mat-row {
   text-align: center;
   font-style: italic;

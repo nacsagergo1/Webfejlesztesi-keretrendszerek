@@ -28,7 +28,6 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule
   ],
   templateUrl: './app.component.html',
-  // A property neve: styleUrls, nem styleUrl
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {

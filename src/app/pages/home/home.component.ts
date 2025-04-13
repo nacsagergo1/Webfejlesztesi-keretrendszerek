@@ -43,7 +43,6 @@ export class HomeComponent {
   }
 
   ngOnDestroy(): void {
-    // Eltávolítjuk a class-t, ha kilépünk az oldalról
     this.renderer.removeClass(document.body, 'light');
     this.renderer.removeClass(document.body, 'dark');
   }

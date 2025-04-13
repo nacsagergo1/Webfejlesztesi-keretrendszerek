@@ -4,11 +4,9 @@
   </mat-card-header>
   
   <mat-card-content>
-    <!-- Új mérkőzés felvitele -->
     <div class="form-group">
 
 
-      <!-- Hazai csapat kiválasztása -->
       <mat-form-field appearance="outline">
         <mat-label>Hazai csapat</mat-label>
         <mat-select [(ngModel)]="newMatch.hazai">
@@ -19,7 +17,6 @@
         </mat-select>
       </mat-form-field>
 
-      <!-- Vendég csapat kiválasztása -->
       <mat-form-field appearance="outline">
         <mat-label>Vendég csapat</mat-label>
         <mat-select [(ngModel)]="newMatch.vendeg">
@@ -36,10 +33,8 @@
       </button>
     </div>
 
-    <!-- Aktív mérkőzések listája -->
     <table mat-table [dataSource]="activeMatches" class="mat-elevation-z8">
       
-      <!-- Hazai csapat oszlop -->
       <ng-container matColumnDef="hazai">
         <th mat-header-cell *matHeaderCellDef>Hazai</th>
         <td mat-cell *matCellDef="let match">
@@ -48,7 +43,6 @@
         </td>
       </ng-container>
 
-      <!-- Vendég csapat oszlop -->
       <ng-container matColumnDef="vendeg">
         <th mat-header-cell *matHeaderCellDef>Vendég</th>
         <td mat-cell *matCellDef="let match">
@@ -57,7 +51,6 @@
         </td>
       </ng-container>
 
-      <!-- Hazai gól oszlop -->
       <ng-container matColumnDef="hazaiGol">
         <th mat-header-cell *matHeaderCellDef>Hazai csapat góljai</th>
         <td mat-cell *matCellDef="let match">
@@ -67,7 +60,6 @@
         </td>
       </ng-container>
 
-      <!-- Vendég gól oszlop -->
       <ng-container matColumnDef="vendegGol">
         <th mat-header-cell *matHeaderCellDef>Vendég csapat góljai</th>
         <td mat-cell *matCellDef="let match">
@@ -77,7 +69,6 @@
         </td>
       </ng-container>
 
-      <!-- Műveletek oszlop -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Műveletek</th>
         <td mat-cell *matCellDef="let match">
@@ -90,7 +81,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-      <!-- Ha nincs aktív mérkőzés -->
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" colspan="5">Nincs aktív mérkőzés</td>
       </tr>

@@ -5,25 +5,21 @@
   <mat-card-content>
     <table mat-table [dataSource]="results" class="mat-elevation-z8">
       
-      <!-- Hazai csapat oszlop -->
       <ng-container matColumnDef="hazai">
         <th mat-header-cell *matHeaderCellDef>Hazai</th>
         <td mat-cell *matCellDef="let result">{{ result.hazai }}</td>
       </ng-container>
 
-      <!-- Hazai gólarány oszlop -->
       <ng-container matColumnDef="hazaiGol">
         <th mat-header-cell *matHeaderCellDef>Hazai Gólarány</th>
         <td mat-cell *matCellDef="let result">{{ result.hazaiGol }}</td>
       </ng-container>
 
-      <!-- Vendég gólarány oszlop -->
       <ng-container matColumnDef="vendegGol">
         <th mat-header-cell *matHeaderCellDef>Vendég Gólarány</th>
         <td mat-cell *matCellDef="let result">{{ result.vendegGol }}</td>
       </ng-container>
 
-      <!-- Vendég csapat oszlop -->
       <ng-container matColumnDef="vendeg">
         <th mat-header-cell *matHeaderCellDef>Vendég</th>
         <td mat-cell *matCellDef="let result">{{ result.vendeg }}</td>
@@ -32,7 +28,6 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       
-      <!-- Nincs eredmény esetén -->
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" colspan="4">Nincs eredmény</td>
       </tr>

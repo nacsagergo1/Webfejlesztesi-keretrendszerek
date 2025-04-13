@@ -37,7 +37,6 @@ export class MerkozesekComponent {
   @Input() title: string = 'Mérkőzések hozzáadása';
   @Output() matchAdded = new EventEmitter<Match>();
 
-  // Csapatok objektumokként, képpel együtt
 teams: { name: string, img: string }[] = [
   { name: 'Alaves', img: 'images/alaves.png' },
   { name: 'Athletic Bilbao', img: 'images/bilbao.png' },
@@ -62,25 +61,20 @@ teams: { name: string, img: string }[] = [
 ];
 
 
-  // Új mérkőzés létrehozásához szükséges adatok
   newMatch = {
     hazai: '',
     vendeg: ''
   };
 
-  // Segédfüggvény a kép URL lekéréséhez a csapatnév alapján
 getTeamImg(teamName: string): string {
   const team = this.teams.find(t => t.name === teamName);
-  return team ? team.img : 'images/default.png'; // Ha nincs találat, egy alapértelmezett képet használ
+  return team ? team.img : 'images/default.png'; 
 }
 
-  // Mérkőzések tárolása
   matches: Match[] = [];
 
-  // Az aktív mérkőzések táblázathoz használt oszlopok
   displayedColumns: string[] = ['hazai', 'vendeg', 'hazaiGol', 'vendegGol', 'actions'];
 
-  // Új mérkőzés hozzáadása
   addMatch(): void {
     if (this.newMatch.hazai && this.newMatch.vendeg && this.newMatch.hazai !== this.newMatch.vendeg) {
       const newMatchEntry: Match = {
@@ -97,15 +91,12 @@ getTeamImg(teamName: string): string {
     }
   }
 
-  // Mérkőzés eredményének rögzítése
   recordResult(match: Match): void {
     if (match.hazaiGol !== null && match.vendegGol !== null && match.hazaiGol >= 0 && match.vendegGol >= 0) {
       match.completed = true;
-      // Itt érdemes lehet értesíteni a "Eredmények" komponenst valamilyen közös adatkezelés vagy esemény segítségével
     }
   }
 
-  // Csak az aktív (eredmény nélküli) mérkőzések
   get activeMatches() {
     return this.matches.filter(m => !m.completed);
   }
