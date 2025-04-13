@@ -1,0 +1,40 @@
+<!--
+<app-menu (selectedPage) = "changePage($event)"></app-menu>
+@if (page == "home"){
+  <app-home></app-home>
+} @else if (page == "merkozesek") {
+  <app-merkozesek></app-merkozesek>
+} @else if (page == "tabella"){
+  <app-tabella></app-tabella>
+}@else{
+  <app-eredmenyek></app-eredmenyek>
+}
+  -->
+<!--   <router-outlet />   -->
+
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <app-menu [sidenav] = "sidenav"></app-menu>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <button mat-button (click)="onToggleSidenav(sidenav)" class="menu-toggle-button" aria-label="Open Menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      
+      <div>La Liga</div>
+      <nav>
+        <ul>
+          <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
+          <li><a routerLink="/tabella" routerLinkActive="active">Tabella</a></li>
+          <li><a routerLink="/eredmenyek" routerLinkActive="active">Eredmények</a></li>
+          <li><a routerLink="/merkozesek" routerLinkActive="active">Mérkőzések</a></li>
+
+        </ul>
+      </nav>
+    </mat-toolbar>
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,89 @@
+:host {
+    display: block;
+  }
+  
+  mat-sidenav-container {
+    height: 100%;
+  }
+  
+  mat-sidenav {
+    border-radius: 0;
+  }
+  
+  .menu-toggle-button {
+    display: none;
+  }
+  
+  mat-toolbar {
+    width: 100%;
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  mat-toolbar > div {
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    color: #fff;
+    padding: 10px 15px;
+  }
+  
+  mat-toolbar nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  mat-toolbar nav li {
+    font-family: Arial, sans-serif;
+    font-size: 22px;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 15px;
+    position: relative;
+  }
+  
+  mat-toolbar nav li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  
+  mat-toolbar nav li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background: #fff;
+    transition: width 0.3s ease;
+  }
+  
+  mat-toolbar nav li a:hover::after {
+    width: 100%;
+  }
+  
+  mat-toolbar nav li a.active::after {
+    width: 100%;
+  }
+  
+  @media (max-width: 768px) {
+    .menu-toggle-button {
+      display: block;
+    }
+  
+    mat-toolbar nav ul {
+      display: none;
+    }
+  }
+  

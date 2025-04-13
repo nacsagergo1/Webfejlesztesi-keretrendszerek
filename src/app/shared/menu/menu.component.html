@@ -1,0 +1,27 @@
+<!--
+<nav class="navbar">
+  <ul>
+    <li>
+      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+    </li>
+    <li>
+      <a routerLink="/tabella" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Tabella</a>
+    </li>
+    <li>
+      <a routerLink="/eredmenyek" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Eredmények</a>
+    </li>
+    <li>
+      <a routerLink="/merkozesek" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Mérkőzések</a>
+    </li>
+  </ul>
+</nav>
+-->
+
+<mat-nav-list>
+  
+  <a mat-list-item routerLink="/home" routerLinkActive="active" (click)="closeMenu()" [routerLinkActiveOptions]="{exact: true}"><mat-icon matListItemIcon>home</mat-icon><span matListItemTitle>Home</span></a>
+  <a mat-list-item routerLink="/tabella" routerLinkActive="active" (click)="closeMenu()" [routerLinkActiveOptions]="{exact: true}"><mat-icon matListItemIcon>table</mat-icon><span matListItemTitle>Tabella</span></a>
+  <a mat-list-item routerLink="/eredmenyek" routerLinkActive="active" (click)="closeMenu()" [routerLinkActiveOptions]="{exact: true}"><mat-icon matListItemIcon>check</mat-icon><span matListItemTitle>Eredmények</span></a>
+  <a mat-list-item routerLink="/merkozesek" routerLinkActive="active" (click)="closeMenu()" [routerLinkActiveOptions]="{exact: true}"><mat-icon matListItemIcon>sports_soccer</mat-icon><span matListItemTitle>Mérkőzések</span></a>
+
+</mat-nav-list>

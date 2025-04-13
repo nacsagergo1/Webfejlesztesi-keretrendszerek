@@ -1,0 +1,53 @@
+<div class="home-container" [ngClass]="selectedTheme">
+
+<h1 [ngStyle]="{ 'text-shadow': selectedTheme === 'dark' ? '2px 2px 4px #000' : 'none' }">
+Üdvözlünk a LaLiga oldalán!
+</h1>
+
+<button (click)="toggleTheme()" class="theme-toggle">
+{{ selectedTheme === 'light' ? 'Sötét mód' : 'Világos mód' }}
+</button>
+
+<p>
+A LaLiga világszínvonalú bajnokság, ahol a futball szépsége és az izgalmas mérkőzések találkoznak.
+</p>
+
+<section class="description">
+<h2>Rólunk</h2>
+<p>
+A LaLiga évtizedek óta biztosítja a legjobb futball élményt. Az élmény itt nem csak a mérkőzésekről szól, hanem a szenvedélyről és a kiváló játékosokról, akik nagy nevek lettek – vagy még azok.
+</p>
+</section>
+
+<section class="players">
+    <h2>Jelenlegi, 2024/25-ös idény csapatai</h2>
+    <div class="players-grid">
+      @for (team of teams; track team) {
+        <div class="player">
+          <img [src]="team.img" [alt]="team.name" class="player-image">
+          
+          @switch (team.name) {
+            @case ('Real Madrid') {
+              <p class="top-team">{{ team.name | teamShort }} - Top csapat</p>
+            }
+            @case ('FC Barcelona') {
+              <p class="top-team">{{ team.name | teamShort }} - Top csapat</p>
+            }
+            @case ('Atletico Madrid') {
+              <p class="kiemelt-team">{{ team.name | teamShort }} - Kiemelt</p>
+            }
+            @default {
+              <p>{{ team.name | teamShort }}</p>
+            }
+          }
+        </div>
+      } @empty {
+        <p>Nincs elérhető csapat.</p>
+      }
+    </div>
+  </section>  
+
+<button routerLink="/../tabella" class="btn-table">
+Tabella jelenlegi állásának megtekintése
+</button>
+</div>
