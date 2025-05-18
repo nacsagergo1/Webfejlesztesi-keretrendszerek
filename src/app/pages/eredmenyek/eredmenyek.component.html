@@ -6,31 +6,112 @@
     <table mat-table [dataSource]="results" class="mat-elevation-z8">
       
       <ng-container matColumnDef="hazai">
-        <th mat-header-cell *matHeaderCellDef>Hazai</th>
-        <td mat-cell *matCellDef="let result">{{ result.hazai }}</td>
+        <th mat-header-cell *matHeaderCellDef> Hazai </th>
+        <td mat-cell *matCellDef="let result">
+          <img [src]="getTeamImg(result.hazai)" alt="{{ result.hazai }}" class="team-logo"/>
+          {{ result.hazai }}
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="hazaiGol">
-        <th mat-header-cell *matHeaderCellDef>Hazai Gólarány</th>
+        <th mat-header-cell *matHeaderCellDef> Hazai Gólarány </th>
         <td mat-cell *matCellDef="let result">{{ result.hazaiGol }}</td>
       </ng-container>
 
       <ng-container matColumnDef="vendegGol">
-        <th mat-header-cell *matHeaderCellDef>Vendég Gólarány</th>
+        <th mat-header-cell *matHeaderCellDef> Vendég Gólarány </th>
         <td mat-cell *matCellDef="let result">{{ result.vendegGol }}</td>
       </ng-container>
 
       <ng-container matColumnDef="vendeg">
-        <th mat-header-cell *matHeaderCellDef>Vendég</th>
-        <td mat-cell *matCellDef="let result">{{ result.vendeg }}</td>
+        <th mat-header-cell *matHeaderCellDef> Vendég </th>
+        <td mat-cell *matCellDef="let result">
+          <img [src]="getTeamImg(result.vendeg)" alt="{{ result.vendeg }}" class="team-logo"/>
+          {{ result.vendeg }}
+        </td>
+      </ng-container>
+
+      <!-- Törlés oszlop -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Műveletek </th>
+        <td mat-cell *matCellDef="let result">
+          <button mat-icon-button (click)="deleteMatch(result.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">Nincs eredmény</td>
+        <td class="mat-cell" colspan="5">Nincs eredmény</td>
       </tr>
     </table>
+  </mat-card-content>
+</mat-card>
+
+
+<!-- Real Madrid hazai meccsei -->
+<mat-card class="mat-elevation-z2 match-card">
+  <mat-card-header>
+    <mat-card-title>Real Madrid hazai meccsei</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let m of realMadridMatches; let i = index"
+                 [ngClass]="{ 'alt-row': i % 2 === 0 }">
+        <mat-icon matListIcon color="primary">sports_soccer</mat-icon>
+        <span>{{ m.hazai }} - {{ m.vendeg }} ({{ m.hazaiGol }} : {{ m.vendegGol }})</span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+
+<!-- Barcelona vendég meccsei -->
+<mat-card class="mat-elevation-z2 match-card">
+  <mat-card-header>
+    <mat-card-title>Barcelona vendég meccsei</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let m of barcelonaMatches; let i = index"
+                 [ngClass]="{ 'alt-row': i % 2 === 0 }">
+        <mat-icon matListIcon color="primary">sports_soccer</mat-icon>
+        <span>{{ m.hazai }} - {{ m.vendeg }} ({{ m.hazaiGol }} : {{ m.vendegGol }})</span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+
+<!-- Top 5 hazai gólos meccsek -->
+<mat-card class="mat-elevation-z2 match-card">
+  <mat-card-header>
+    <mat-card-title>Legtöbb hazai gólt szerzett meccsek (Top 5)</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let m of topScoredMatches; let i = index"
+                 [ngClass]="{ 'alt-row': i % 2 === 0 }">
+        <mat-icon matListIcon color="primary">sports_soccer</mat-icon>
+        <span>{{ m.hazai }} - {{ m.vendeg }} ({{ m.hazaiGol }} : {{ m.vendegGol }})</span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+
+<!-- Hazai csapat legalább 3 gólt szerzett -->
+<mat-card class="mat-elevation-z2 match-card">
+  <mat-card-header>
+    <mat-card-title>Meccsek, ahol a hazai csapat legalább 3 gólt szerzett</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let m of highScoringMatches; let i = index"
+                 [ngClass]="{ 'alt-row': i % 2 === 0 }">
+        <mat-icon matListIcon color="primary">sports_soccer</mat-icon>
+        <span>{{ m.hazai }} - {{ m.vendeg }} ({{ m.hazaiGol }} : {{ m.vendegGol }})</span>
+      </mat-list-item>
+    </mat-list>
   </mat-card-content>
 </mat-card>

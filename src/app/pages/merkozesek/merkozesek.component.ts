@@ -7,9 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatchService } from '../../shared/services/match.service';
 
 export interface Match {
-  id: number;
+  id: string;
   hazai: string;
   vendeg: string;
   hazaiGol: number | null;
@@ -75,25 +76,37 @@ getTeamImg(teamName: string): string {
 
   displayedColumns: string[] = ['hazai', 'vendeg', 'hazaiGol', 'vendegGol', 'actions'];
 
+  constructor(private matchService: MatchService) {}
+
   addMatch(): void {
-    if (this.newMatch.hazai && this.newMatch.vendeg && this.newMatch.hazai !== this.newMatch.vendeg) {
-      const newMatchEntry: Match = {
-        id: this.matches.length + 1,
+    if (
+      this.newMatch.hazai &&
+      this.newMatch.vendeg &&
+      this.newMatch.hazai !== this.newMatch.vendeg
+    ) {
+      const newMatchEntry: Omit<Match, 'id'> = {
         hazai: this.newMatch.hazai,
         vendeg: this.newMatch.vendeg,
         hazaiGol: null,
         vendegGol: null,
         completed: false
       };
-      this.matches = [...this.matches, newMatchEntry];
-      this.matchAdded.emit(newMatchEntry);
-      this.newMatch = { hazai: '', vendeg: '' };
+
+      this.matchService.addMatch(newMatchEntry).then(docRef => {
+        const matchWithId: Match = { ...newMatchEntry, id: docRef.id };
+        this.matches = [...this.matches, matchWithId];
+        this.matchAdded.emit(matchWithId);
+        this.newMatch = { hazai: '', vendeg: '' };
+      }).catch(err => {
+        console.error('Hiba a mérkőzés mentésekor:', err);
+      });
     }
   }
 
   recordResult(match: Match): void {
     if (match.hazaiGol !== null && match.vendegGol !== null && match.hazaiGol >= 0 && match.vendegGol >= 0) {
       match.completed = true;
+      this.matchService.updateMatchResult(match);
     }
   }
 

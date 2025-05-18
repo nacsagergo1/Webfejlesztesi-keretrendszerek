@@ -32,6 +32,18 @@
           <li><a routerLink="/eredmenyek" routerLinkActive="active">Eredmények</a></li>
           <li><a routerLink="/merkozesek" routerLinkActive="active">Mérkőzések</a></li>
 
+          @if (isLoggedIn) {
+            <li><a routerLink="/profile" routerLinkActive="active">Profilom</a></li>
+          }
+          
+          @if (!isLoggedIn) {
+            <li><a routerLink="/login" routerLinkActive="active">Bejelentkezés</a></li>
+          }
+          
+          @if (isLoggedIn) {
+            <li><a href="#" (click)="$event.preventDefault(); logout()">Kijelentkezés</a></li>
+          }
+
         </ul>
       </nav>
     </mat-toolbar>

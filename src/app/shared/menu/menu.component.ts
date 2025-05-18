@@ -1,47 +1,60 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { MatListModule } from '@angular/material/list';
+import { MatListModule } from '@angular/material/list'
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav } from '@angular/material/sidenav';
-import { HomeComponent } from '\../../pages/home/home.component';
-import { TabellaComponent } from '\../../pages/tabella/tabella.component';
-import { EredmenyekComponent } from '\../../pages/eredmenyek/eredmenyek.component';
-import { MerkozesekComponent } from '\../../pages/merkozesek/merkozesek.component';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
-  standalone: true,
-  imports: [RouterLink, RouterLinkActive, MatListModule, MatIconModule, HomeComponent, TabellaComponent, EredmenyekComponent, MerkozesekComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+    MatListModule,
+    MatIconModule
+  ],
   templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.scss']
+  styleUrl: './menu.component.scss'
 })
-export class MenuComponent implements OnInit, AfterViewInit {
+export class MenuComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() sidenav!: MatSidenav;
-  @Output() selectedPage: EventEmitter<string> = new EventEmitter();
-  currentPage: string = 'home';
+  @Input() isLoggedIn: boolean = false;
+  @Output() logoutEvent = new EventEmitter<void>();
+  
+  private authSubscription?: Subscription;
 
-  constructor() {
+  constructor(private authService: AuthService) {
     console.log("constructor called");
   }
 
   ngOnInit(): void {
-    console.log("ngOnInit called");
+    this.authSubscription = this.authService.currentUser.subscribe(user => {
+      this.isLoggedIn = !!user;
+      localStorage.setItem('isLoggedIn', this.isLoggedIn ? 'true' : 'false');
+    });
   }
 
   ngAfterViewInit(): void {
     console.log("ngAfterViewInit called");
   }
 
-  menuSwitch(pageValue: string) {
-    this.currentPage = pageValue;
-    this.selectedPage.emit(pageValue);
-
-    this.sidenav.close();
+  ngOnDestroy(): void {
+    this.authSubscription?.unsubscribe();
   }
 
   closeMenu() {
     if (this.sidenav) {
       this.sidenav.close();
     }
+  }
+
+  logout() {
+    this.authService.signOut().then(() => {
+      this.logoutEvent.emit();
+      this.closeMenu();
+    });
   }
 }

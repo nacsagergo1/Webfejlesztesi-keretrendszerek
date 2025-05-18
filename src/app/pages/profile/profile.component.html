@@ -1,0 +1,31 @@
+<div class="profile-container">
+  <mat-card>
+    <mat-card-content>
+      @if (isLoading) {
+        <div class="loading-container">
+          <p>Loading profile data...</p>
+        </div>
+      } @else if (user) {
+        <div class="profile-hero">
+            <div class="profile-card mat-elevation-z4">
+                <div class="avatar-big">
+                {{ getUserInitials() }}
+                </div>
+                <h2 class="username">{{ user?.username }}</h2>
+                <div class="user-email">
+                <mat-icon>email</mat-icon>
+                <span>{{ user?.email }}</span>
+                </div>
+                <button mat-stroked-button color="primary" class="edit-btn"> <mat-icon>edit</mat-icon> Profil szerkesztése </button>
+            </div>
+        </div>
+
+      } @else {
+        <div class="empty-state">
+          <mat-icon>person_off</mat-icon>
+          <p>No user profile found. Please log in.</p>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

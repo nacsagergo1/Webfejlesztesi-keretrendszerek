@@ -1,97 +1,140 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { Component, OnInit } from '@angular/core';
+import { MatchService, Match } from '../../shared/services/match.service';
 import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
-export interface MatchResult {
-  hazai: string;
-  vendeg: string;
-  hazaiGol: number;
-  vendegGol: number;
-}
-
-export interface TeamStats {
-  team: string;
-  played: number;
-  wins: number;
-  draws: number;
-  losses: number;
-  gf: number;
-  ga: number;
-  goalDifference: number;
+export interface Team {
+  name: string;
   points: number;
+  img: string;
+  goalsFor: number;
+  goalsAgainst: number;
+  goalDifference: number;
+  matchesPlayed: number;
 }
 
 @Component({
   selector: 'app-tabella',
-  standalone: true,
-  imports: [CommonModule, MatTableModule, MatCardModule],
   templateUrl: './tabella.component.html',
-  styleUrls: ['./tabella.component.scss']
+  styleUrls: ['./tabella.component.scss'],
+  standalone: true,
+  imports: [MatCardModule, MatTableModule, MatIconModule, MatButtonModule]
 })
-export class TabellaComponent implements OnChanges {
-  @Input() results: MatchResult[] = [];
+export class TabellaComponent implements OnInit {
+  teams: Team[] = [];
 
-  teamStats: TeamStats[] = [];
-  displayedColumns: string[] = ['position', 'team', 'played', 'wins', 'draws', 'losses', 'gf', 'ga', 'goalDifference', 'points'];
+  displayedColumns: string[] = ['position', 'team', 'matchesPlayed', 'goalsFor', 'goalsAgainst', 'goalDifference', 'points'];
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if(changes['results']) {
-      this.calculateStandings();
-    }
+  knownTeams: { name: string, img: string }[] = [
+    { name: 'Alaves', img: 'images/alaves.png' },
+    { name: 'Athletic Bilbao', img: 'images/bilbao.png' },
+    { name: 'Atletico Madrid', img: 'images/atletico.png' },
+    { name: 'FC Barcelona', img: 'images/barcelona.png' },
+    { name: 'Celta Vigo', img: 'images/celta.png' },
+    { name: 'Espanyol', img: 'images/espanyol.png' },
+    { name: 'Getafe', img: 'images/getafe.png' },
+    { name: 'Girona', img: 'images/girona.png' },
+    { name: 'Las Palmas', img: 'images/laspalmas.png' },
+    { name: 'Leganes', img: 'images/leganes.png' },
+    { name: 'Mallorca', img: 'images/mallorca.png' },
+    { name: 'Osasuna', img: 'images/osasuna.png' },
+    { name: 'Rayo Vallecano', img: 'images/rayo.png' },
+    { name: 'Real Betis', img: 'images/betis.png' },
+    { name: 'Real Madrid', img: 'images/realmadrid.png' },
+    { name: 'Real Sociedad', img: 'images/sociedad.png' },
+    { name: 'Sevilla', img: 'images/sevilla.png' },
+    { name: 'Valencia', img: 'images/valencia.png' },
+    { name: 'Valladolid', img: 'images/valladolid.png' },
+    { name: 'Villarreal', img: 'images/villarreal.png' }
+  ];
+
+  constructor(private matchService: MatchService) {}
+
+  ngOnInit(): void {
+    this.loadMatches();
   }
 
-  calculateStandings(): void {
-    const statsMap = new Map<string, TeamStats>();
+  loadMatches(): void {
+    this.matchService.getMatches().subscribe(
+      (matches: Match[]) => this.calculatePoints(matches),
+      (err) => console.error('Hiba a mérkőzések betöltésekor:', err)
+    );
+  }
 
-    this.results.forEach(result => {
-      this.updateTeam(statsMap, result.hazai, result.hazaiGol, result.vendegGol);
-      this.updateTeam(statsMap, result.vendeg, result.vendegGol, result.hazaiGol);
-    });
+  calculatePoints(matches: Match[]): void {
+    const teamsMap: { [key: string]: Team } = {};
 
-    this.teamStats = Array.from(statsMap.values());
+    matches.forEach(match => {
+      const hazai = match.hazai;
+      const vendeg = match.vendeg;
+      const hazaiGol = match.hazaiGol ?? 0;
+      const vendegGol = match.vendegGol ?? 0;
 
-    this.teamStats.sort((a, b) => {
-      if (b.points !== a.points) {
-        return b.points - a.points;
-      } else if (b.goalDifference !== a.goalDifference) {
-        return b.goalDifference - a.goalDifference;
-      } else {
-        return a.team.localeCompare(b.team);
+      // Inicializálás, ha még nincs a map-ben
+      if (!teamsMap[hazai]) {
+        teamsMap[hazai] = {
+          name: hazai,
+          points: 0,
+          img: this.getTeamImg(hazai),
+          goalsFor: 0,
+          goalsAgainst: 0,
+          goalDifference: 0,
+          matchesPlayed: 0
+        };
       }
+
+      if (!teamsMap[vendeg]) {
+        teamsMap[vendeg] = {
+          name: vendeg,
+          points: 0,
+          img: this.getTeamImg(vendeg),
+          goalsFor: 0,
+          goalsAgainst: 0,
+          goalDifference: 0,
+          matchesPlayed: 0
+        };
+      }
+
+      // Meccsszám növelés
+      teamsMap[hazai].matchesPlayed += 1;
+      teamsMap[vendeg].matchesPlayed += 1;
+
+      // Pontok
+      if (hazaiGol > vendegGol) {
+        teamsMap[hazai].points += 3;
+      } else if (hazaiGol < vendegGol) {
+        teamsMap[vendeg].points += 3;
+      } else {
+        teamsMap[hazai].points += 1;
+        teamsMap[vendeg].points += 1;
+      }
+
+      // Gólszámok frissítése
+      teamsMap[hazai].goalsFor += hazaiGol;
+      teamsMap[hazai].goalsAgainst += vendegGol;
+
+      teamsMap[vendeg].goalsFor += vendegGol;
+      teamsMap[vendeg].goalsAgainst += hazaiGol;
+    });
+
+    // Gólkülönbség kiszámítása
+    Object.values(teamsMap).forEach(team => {
+      team.goalDifference = team.goalsFor - team.goalsAgainst;
+    });
+
+    // Rendezés
+    this.teams = Object.values(teamsMap).sort((a, b) => {
+      if (b.points === a.points) {
+        return b.goalDifference - a.goalDifference;
+      }
+      return b.points - a.points;
     });
   }
 
-  updateTeam(statsMap: Map<string, TeamStats>, team: string, goalsFor: number, goalsAgainst: number): void {
-    let teamStat = statsMap.get(team);
-    if (!teamStat) {
-      teamStat = {
-        team: team,
-        played: 0,
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        gf: 0,
-        ga: 0,
-        goalDifference: 0,
-        points: 0
-      };
-      statsMap.set(team, teamStat);
-    }
-
-    teamStat.played++;
-    teamStat.gf += goalsFor;
-    teamStat.ga += goalsAgainst;
-    teamStat.goalDifference = teamStat.gf - teamStat.ga;
-
-    if (goalsFor > goalsAgainst) {
-      teamStat.wins++;
-      teamStat.points += 3;
-    } else if (goalsFor === goalsAgainst) {
-      teamStat.draws++;
-      teamStat.points += 1;
-    } else {
-      teamStat.losses++;
-    }
+  getTeamImg(teamName: string): string {
+    const team = this.knownTeams.find(t => t.name === teamName);
+    return team ? team.img : 'images/default.png';
   }
 }
